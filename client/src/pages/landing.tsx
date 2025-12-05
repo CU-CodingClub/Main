@@ -158,131 +158,183 @@ useEffect(() => {
   return (
     <div className="min-h-screen bg-white">
       {/* Navigation */}
-      <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 navbar">
-        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
-          <Link href="/">
-            <div className="flex items-center gap-3 cursor-pointer">
-              <img 
-                src="/assets/images/culogo.png" 
-                alt="College Logo" 
-                className="h-24 w-24 object-contain"
-              />
-            </div>
+     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 navbar">
+  <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
+    <Link href="/">
+      <div className="flex items-center gap-3 cursor-pointer">
+        <img 
+          src="/assets/images/culogo.png" 
+          alt="College Logo" 
+          className="h-24 w-24 object-contain"
+        />
+      </div>
+    </Link>
+
+    {/* Desktop Navigation */}
+    <center>
+      <nav className="hidden md:flex items-center gap-8">
+        <Link 
+          href="/" 
+          className="text-gray-600 font-medium hover:text-red-600 transition-colors duration-300 relative group"
+          onClick={() => window.scrollTo(0, 0)}
+        >
+          Home
+          <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 transition-all duration-300 group-hover:w-full"></span>
+        </Link>
+        
+        <Link 
+          href="/about" 
+          className="text-gray-600 font-medium hover:text-red-600 transition-colors duration-300 relative group"
+          onClick={() => window.scrollTo(0, 0)}
+        >
+          About
+          <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 transition-all duration-300 group-hover:w-full"></span>
+        </Link>
+        
+        <Link 
+          href="/events" 
+          className="text-gray-600 font-medium hover:text-red-600 transition-colors duration-300 relative group"
+          onClick={() => window.scrollTo(0, 0)}
+        >
+          Events
+          <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 transition-all duration-300 group-hover:w-full"></span>
+        </Link>
+        
+        <Link 
+          href="/projects" 
+          className="text-gray-600 font-medium hover:text-red-600 transition-colors duration-300 relative group"
+          onClick={() => window.scrollTo(0, 0)}
+        >
+          Projects
+          <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 transition-all duration-300 group-hover:w-full"></span>
+        </Link>
+        
+        <Link 
+          href="/team" 
+          className="text-gray-600 font-medium hover:text-red-600 transition-colors duration-300 relative group"
+          onClick={() => window.scrollTo(0, 0)}
+        >
+          Team
+          <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 transition-all duration-300 group-hover:w-full"></span>
+        </Link>
+      </nav>
+    </center>
+
+    {/* Desktop Auth Buttons (Desktop पर) */}
+    <div className="hidden md:flex items-center gap-3">
+      {isAuthenticated ? (
+        <Link href="/dashboard">
+          <Button className="bg-red-600 hover:bg-red-700 text-white">Dashboard</Button>
+        </Link>
+      ) : (
+        <>
+          <Link href="/login">
+            <Button variant="outline" className="border-red-600 text-red-600 hover:bg-red-50">
+              Login
+            </Button>
           </Link>
+          <Link href="/signup">
+            <Button className="bg-red-600 hover:bg-red-700 text-white">Sign Up</Button>
+          </Link>
+        </>
+      )}
+    </div>
 
-          {/* Desktop Navigation */}
-          <center>
-            <nav className="hidden md:flex items-center gap-8">
-              <Link 
-                href="/" 
-                className="text-gray-600 font-medium hover:text-red-600 transition-colors duration-300 relative group"
-                onClick={() => window.scrollTo(0, 0)}
-              >
-                Home
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 transition-all duration-300 group-hover:w-full"></span>
-              </Link>
-              
-              <Link 
-                href="/about" 
-                className="text-gray-600 font-medium hover:text-red-600 transition-colors duration-300 relative group"
-                onClick={() => window.scrollTo(0, 0)}
-              >
-                About
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 transition-all duration-300 group-hover:w-full"></span>
-              </Link>
-              
-              <Link 
-                href="/events" 
-                className="text-gray-600 font-medium hover:text-red-600 transition-colors duration-300 relative group"
-                onClick={() => window.scrollTo(0, 0)}
-              >
-                Events
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 transition-all duration-300 group-hover:w-full"></span>
-              </Link>
-              
-              <Link 
-                href="/projects" 
-                className="text-gray-600 font-medium hover:text-red-600 transition-colors duration-300 relative group"
-                onClick={() => window.scrollTo(0, 0)}
-              >
-                Projects
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 transition-all duration-300 group-hover:w-full"></span>
-              </Link>
-              
-              <Link 
-                href="/team" 
-                className="text-gray-600 font-medium hover:text-red-600 transition-colors duration-300 relative group"
-                onClick={() => window.scrollTo(0, 0)}
-              >
-                Team
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-red-600 transition-all duration-300 group-hover:w-full"></span>
-              </Link>
-            </nav>
-          </center>
+    {/* MOBILE MENU BUTTON (Mobile पर सिर्फ यही दिखेगा) */}
+    <button
+      id="mobileMenuButton"
+      onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+      className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-red-500"
+      aria-label="Toggle mobile menu"
+      aria-expanded={isMobileMenuOpen}
+    >
+      <svg className="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        {isMobileMenuOpen ? (
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M6 18L18 6M6 6l12 12"
+          />
+        ) : (
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M4 6h16M4 12h16M4 18h16"
+          />
+        )}
+      </svg>
+    </button>
+  </div>
 
-          <div className="flex items-center gap-3">
-            {isAuthenticated ? (
-              <Link href="/dashboard">
-                <Button className="bg-red-600 hover:bg-red-700 text-white">Dashboard</Button>
+  {/* Mobile Navigation Menu (Mobile पर ही दिखेगा) */}
+  {isMobileMenuOpen && (
+    <div className="md:hidden bg-white border-t border-gray-200 px-4 py-3 animate-fade-in">
+      <nav className="flex flex-col space-y-3">
+        <Link 
+          href="/" 
+          className="text-gray-600 font-medium hover:text-red-600 transition-colors py-2"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          Home
+        </Link>
+        <Link 
+          href="/about" 
+          className="text-gray-600 font-medium hover:text-red-600 transition-colors py-2"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          About
+        </Link>
+        <Link 
+          href="/events" 
+          className="text-gray-600 font-medium hover:text-red-600 transition-colors py-2"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          Events
+        </Link>
+        <Link 
+          href="/projects" 
+          className="text-gray-600 font-medium hover:text-red-600 transition-colors py-2"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          Projects
+        </Link>
+        <Link 
+          href="/team" 
+          className="text-gray-600 font-medium hover:text-red-600 transition-colors py-2"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          Team
+        </Link>
+        
+        {/* Mobile पर Auth Buttons */}
+        <div className="pt-4 mt-4 border-t border-gray-100 space-y-2">
+          {isAuthenticated ? (
+            <Link href="/dashboard" onClick={() => setIsMobileMenuOpen(false)}>
+              <Button className="w-full bg-red-600 hover:bg-red-700 text-white">
+                Dashboard
+              </Button>
+            </Link>
+          ) : (
+            <>
+              <Link href="/login" onClick={() => setIsMobileMenuOpen(false)}>
+                <Button variant="outline" className="w-full border-red-600 text-red-600 hover:bg-red-50">
+                  Login
+                </Button>
+              </Link><hr></hr>
+              <Link href="/signup" onClick={() => setIsMobileMenuOpen(false)}>
+                <Button className="w-full bg-red-600 hover:bg-red-700 text-white">
+                  Sign Up
+                </Button>
               </Link>
-            ) : (
-              <>
-                <Link href="/login">
-                  <Button variant="outline" className="border-red-600 text-red-600 hover:bg-red-50">
-                    Login
-                  </Button>
-                </Link>
-                <Link href="/signup">
-                  <Button className="bg-red-600 hover:bg-red-700 text-white">Sign Up</Button>
-                </Link>
-              </>
-            )}
-          </div>
-
-          {/* Mobile Navigation Menu */}
-          {isMobileMenuOpen && (
-            <div className="md:hidden bg-white border-t border-gray-200 px-4 py-3 animate-fade-in">
-              <nav className="flex flex-col space-y-3">
-                <Link 
-                  href="/" 
-                  className="text-gray-600 font-medium hover:text-red-600 transition-colors py-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Home
-                </Link>
-                <Link 
-                  href="/about" 
-                  className="text-gray-600 font-medium hover:text-red-600 transition-colors py-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  About
-                </Link>
-                <Link 
-                  href="/events" 
-                  className="text-red-600 font-medium py-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Events
-                </Link>
-                <Link 
-                  href="/projects" 
-                  className="text-gray-600 font-medium hover:text-red-600 transition-colors py-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Projects
-                </Link>
-                <Link 
-                  href="/team" 
-                  className="text-gray-600 font-medium hover:text-red-600 transition-colors py-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Team
-                </Link>
-              </nav>
-            </div>
+            </>
           )}
         </div>
-      </header>
+      </nav>
+    </div>
+  )}
+</header>
 
       {/* Hero Section */}
       <section 
