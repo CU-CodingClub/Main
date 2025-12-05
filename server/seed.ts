@@ -5,7 +5,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 async function seedDatabase() {
-  const client = new MongoClient(process.env.MONGODB_URI || 'mongodb://localhost:27017/CSE');
+  const client = new MongoClient(process.env.MONGODB_URI || 'mongodb+srv://CSE:78inqTPLiT4H8s6S@cse.2lgizgl.mongodb.net/CSE?retryWrites=true&w=majority');
   
   try {
     await client.connect();
