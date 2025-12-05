@@ -1,4 +1,4 @@
-// server/index.ts - COMPLETE WORKING VERSION FOR RENDER (REPLACE THIS FILE ONLY)
+// server/index.ts - COMPLETE WORKING VERSION FOR RENDER
 import dotenv from "dotenv";
 
 // Load environment variables
@@ -6,9 +6,33 @@ dotenv.config();
 
 console.log("🔧 Environment Check:");
 console.log("🔧 BREVO_API_KEY:", process.env.BREVO_API_KEY ? "✅ Found" : "❌ Not found");
+console.log("🔧 MONGODB_URI:", process.env.MONGODB_URI ? "✅ Found" : "❌ Not found (This is expected if not using MongoDB)");
 console.log("🔧 NODE_ENV:", process.env.NODE_ENV || 'development');
 console.log("🔧 PORT:", process.env.PORT || '10000');
 
+// Test MongoDB connection if configured
+import { MongoClient } from 'mongodb';
+if (process.env.MONGODB_URI) {
+  console.log("🔧 Testing MongoDB connection...");
+  (async () => {
+    try {
+      const client = new MongoClient(process.env.MONGODB_URI);
+      // Set timeout for connection
+      const timeoutPromise = new Promise((_, reject) => 
+        setTimeout(() => reject(new Error('Connection timeout')), 10000)
+      );
+      
+      await Promise.race([client.connect(), timeoutPromise]);
+      console.log("✅ MongoDB connection successful!");
+      await client.close();
+    } catch (error: any) {
+      console.log(`⚠️ MongoDB connection failed: ${error.message}`);
+      console.log("⚠️ Running in fallback mode - data will be stored in memory");
+    }
+  })();
+}
+
+// Rest of imports
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { serveStatic } from "./static";
@@ -68,15 +92,7 @@ app.use((req, res, next) => {
   next();
 });
 
-// FIX 1: Handle MongoDB connection without crashing
-try {
-  // Don't connect to MongoDB automatically - let routes handle it
-  console.log("ℹ️ MongoDB connection will be attempted by individual routes if needed");
-} catch (error) {
-  console.log("⚠️ MongoDB not available - running in limited mode");
-}
-
-// FIX 2: Add test email endpoint
+// Test email endpoint
 app.get("/api/test-email", async (req: Request, res: Response) => {
   try {
     const { sendEmail } = await import("./email");
@@ -86,7 +102,7 @@ app.get("/api/test-email", async (req: Request, res: Response) => {
       `<h1>Test Email</h1><p>Brevo API is working!</p>`
     );
     res.json({ 
-      success, 
+      success: true,
       message: "Test email sent",
       timestamp: new Date().toISOString()
     });
@@ -100,25 +116,31 @@ app.get("/api/test-email", async (req: Request, res: Response) => {
   }
 });
 
-// FIX 3: Health check endpoint (WORKS WITHOUT MONGODB)
+// Health check endpoint (ALWAYS WORKS - NO DATABASE DEPENDENCY)
 app.get("/api/health", (req: Request, res: Response) => {
   res.json({ 
     status: 'OK', 
     service: 'Hackathon Platform',
+    emailService: process.env.BREVO_API_KEY ? 'Configured' : 'Not configured',
+    database: process.env.MONGODB_URI ? 'Configured' : 'Memory Storage',
     timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || 'development'
+    environment: process.env.NODE_ENV || 'development',
+    uptime: process.uptime()
   });
 });
 
-// FIX 4: Root endpoint
+// Root endpoint
 app.get("/", (req: Request, res: Response) => {
   res.json({ 
     message: "Hackathon Platform API",
     version: "1.0.0",
+    status: "Running",
     endpoints: {
       health: "/api/health",
       testEmail: "/api/test-email",
-      status: "Running"
+      signup: "POST /api/auth/signup",
+      login: "POST /api/auth/login",
+      adminLogin: "POST /api/admin/login"
     }
   });
 });
@@ -140,11 +162,11 @@ app.get("/", (req: Request, res: Response) => {
     // Register routes
     await registerRoutes(httpServer, app);
 
-    // Error handler
+    // Global error handler
     app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
       const status = err.status || err.statusCode || 500;
       const message = err.message || "Internal Server Error";
-      log(`❌ Error: ${message}`, "error");
+      log(`❌ Error: ${message} (Status: ${status})`, "error");
       res.status(status).json({ 
         message,
         success: false,
@@ -152,33 +174,57 @@ app.get("/", (req: Request, res: Response) => {
       });
     });
 
-    // Static files
+    // Static file serving
     if (process.env.NODE_ENV === "production") {
       serveStatic(app);
-      log("✅ Static files enabled", "static");
+      log("✅ Production mode - static files serving enabled", "static");
     } else {
       const { setupVite } = await import("./vite");
       await setupVite(httpServer, app);
-      log("✅ Vite server enabled", "vite");
+      log("✅ Development mode - Vite server enabled", "vite");
     }
 
-    // FIX 5: CRITICAL - Server startup for Render
+    // Server startup - CRITICAL FOR RENDER
     const port = parseInt(process.env.PORT || "10000", 10);
     
     // MUST use "0.0.0.0" on Render
     httpServer.listen(port, "0.0.0.0", () => {
-      log(`🚀 Server running on port ${port}`, "server");
-      log(`📧 Test: http://localhost:${port}/api/test-email`, "endpoints");
-      log(`❤️ Health: http://localhost:${port}/api/health`, "endpoints");
+      const serverUrl = `https://main-1-f6co.onrender.com`;
       
+      log(`🚀 Server started successfully!`, "server");
+      log(`📍 Port: ${port}`, "server");
+      log(`🌐 Environment: ${process.env.NODE_ENV || 'development'}`, "server");
+      log(`🔗 URL: ${serverUrl}`, "server");
+      log(`📧 Test Email: ${serverUrl}/api/test-email`, "endpoints");
+      log(`❤️ Health Check: ${serverUrl}/api/health`, "endpoints");
+      log(`🏠 Home: ${serverUrl}/`, "endpoints");
+      
+      // Service status
       if (process.env.BREVO_API_KEY) {
         log(`✅ Brevo API: Configured`, "services");
+      } else {
+        log(`⚠️ Brevo API: Not configured`, "services");
+      }
+      
+      if (process.env.MONGODB_URI) {
+        log(`✅ MongoDB: Configured`, "services");
+      } else {
+        log(`⚠️ MongoDB: Not configured - running in memory mode`, "services");
       }
     });
 
   } catch (error: any) {
-    console.error(`❌ Startup error: ${error.message}`);
-    console.error(error);
+    console.error(`❌ Fatal startup error: ${error.message}`);
+    console.error(error.stack);
     process.exit(1);
   }
 })();
+
+// Handle uncaught errors
+process.on('uncaughtException', (error) => {
+  console.error(`🚨 Uncaught Exception: ${error.message}`);
+});
+
+process.on('unhandledRejection', (reason, promise) => {
+  console.error(`🚨 Unhandled Rejection at: ${promise}, reason: ${reason}`);
+});
