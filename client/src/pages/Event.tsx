@@ -404,45 +404,45 @@ const Events = () => {
           </button>
         </div>
 
-        {/* Mobile Navigation Menu */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden bg-white border-t border-gray-200 px-4 py-3 animate-fade-in">
-            <nav className="flex flex-col space-y-3">
-              <Link 
-                href="/" 
-                className="text-gray-600 font-medium hover:text-red-600 transition-colors py-2"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Home
-              </Link>
-              <Link 
-                href="/about" 
-                className="text-gray-600 font-medium hover:text-red-600 transition-colors py-2"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                About
-              </Link>
-              <Link 
-                href="/events" 
-                className="text-red-600 font-medium py-2"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Events
-              </Link>
-              <Link 
-                href="/projects" 
-                className="text-gray-600 font-medium hover:text-red-600 transition-colors py-2"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Projects
-              </Link>
-              <Link 
-                href="/team" 
-                className="text-gray-600 font-medium hover:text-red-600 transition-colors py-2"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                Team
-              </Link>
+{/* Mobile Navigation Menu (Mobile पर ही दिखेगा) */}
+  {isMobileMenuOpen && (
+    <div className="md:hidden bg-white border-t border-gray-200 px-4 py-3 animate-fade-in">
+      <nav className="flex flex-col space-y-3">
+        <Link 
+          href="/" 
+          className="text-gray-600 font-medium hover:text-red-600 transition-colors py-2"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          Home
+        </Link>
+        <Link 
+          href="/about" 
+          className="text-gray-600 font-medium hover:text-red-600 transition-colors py-2"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          About
+        </Link>
+        <Link 
+          href="/events" 
+          className="text-gray-600 font-medium hover:text-red-600 transition-colors py-2"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          Events
+        </Link>
+        <Link 
+          href="/projects" 
+          className="text-gray-600 font-medium hover:text-red-600 transition-colors py-2"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          Projects
+        </Link>
+        <Link 
+          href="/team" 
+          className="text-gray-600 font-medium hover:text-red-600 transition-colors py-2"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          Team
+        </Link>
             </nav>
           </div>
         )}
