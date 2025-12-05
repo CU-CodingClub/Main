@@ -17,6 +17,7 @@ import {
   Users,
   Calendar,
   Mail,
+  Menu,
   MapPin
 } from "lucide-react";
 
@@ -112,6 +113,11 @@ const Projects = () => {
 
   const projectTypes = ["all", "web app", "mobile app", "developer tool", "hardware project", "ai/ml project"];
 
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  
+  // Simple authentication check (modify based on your setup)
+  const isAuthenticated = localStorage.getItem("token") !== null;
+
   const filteredProjects = activeFilter === "all" 
     ? projects 
     : projects.filter(project => 
@@ -186,7 +192,58 @@ const Projects = () => {
     </Link>
   </nav>
 </center>
+
+          {/* Mobile Menu Button */}
+          <button 
+            className="md:hidden p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          >
+            <Menu className="h-6 w-6" />
+          </button>
         </div>
+
+{/* Mobile Navigation Menu (Mobile पर ही दिखेगा) */}
+  {isMobileMenuOpen && (
+    <div className="md:hidden bg-white border-t border-gray-200 px-4 py-3 animate-fade-in">
+      <nav className="flex flex-col space-y-3">
+        <Link 
+          href="/" 
+          className="text-gray-600 font-medium hover:text-red-600 transition-colors py-2"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          Home
+        </Link>
+        <Link 
+          href="/about" 
+          className="text-gray-600 font-medium hover:text-red-600 transition-colors py-2"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          About
+        </Link>
+        <Link 
+          href="/events" 
+          className="text-gray-600 font-medium hover:text-red-600 transition-colors py-2"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          Events
+        </Link>
+        <Link 
+          href="/projects" 
+          className="text-gray-600 font-medium hover:text-red-600 transition-colors py-2"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          Projects
+        </Link>
+        <Link 
+          href="/team" 
+          className="text-gray-600 font-medium hover:text-red-600 transition-colors py-2"
+          onClick={() => setIsMobileMenuOpen(false)}
+        >
+          Team
+        </Link>
+            </nav>
+          </div>
+        )}
       </header>
 
       {/* Page Hero */}
