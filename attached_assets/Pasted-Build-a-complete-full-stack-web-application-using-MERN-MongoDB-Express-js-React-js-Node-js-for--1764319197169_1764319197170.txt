@@ -1,0 +1,199 @@
+Build a complete full-stack web application using MERN (MongoDB, Express.js, React.js, Node.js) for a University Hackathon + Python Workshop Registration System with the following features:
+
+🔐 1. Authentication System
+
+Login
+
+Signup
+
+Forgot Password (reset via email)
+
+JWT-based authentication
+
+Password hashing with bcrypt
+
+Only logged-in users can register for events
+
+🧑‍💼 2. User Dashboard
+
+After login, user sees:
+
+Profile details
+
+List of events (Hackathon, Python Workshop etc.)
+
+Registration status of each event
+
+Allow the user to update profile
+
+💻 3. Hackathon Registration (Team Based)
+
+Create a page for team leader to register:
+
+Team Name
+
+Team Leader Details (Name, Email, Phone, College, Year)
+
+Add Members button:
+
+Add up to 3–4 team members
+
+Each member: name, email, phone
+
+Validate email uniqueness
+
+Save everything to MongoDB
+
+After successful registration:
+
+Send a confirmation email to team leader
+
+Show a success message
+
+🐍 4. Python Workshop Registration (Individual)
+
+Simple form:
+
+Name
+
+Email
+
+Phone
+
+College
+
+Prevent duplicate registration
+
+After register, email confirmation
+
+🛠 5. Admin Panel
+
+Login-protected admin dashboard with:
+
+Hackathon Section
+
+Total teams count
+
+List of all team leaders
+
+List of all team members
+
+Search + Filter
+
+Delete / Edit entry
+
+Button: Download CSV (All Responses)
+
+Workshop Section
+
+Total participants
+
+List view
+
+Filter by college
+
+Download CSV
+
+Admin Features
+
+Admin login (separate credentials)
+
+Dashboard cards:
+
+Total Hackathon Teams
+
+Total Workshop Participants
+
+Total Users Registered
+
+📄 6. CSV Export
+
+Admin can export:
+
+All hackathon registrations (team leader + team members)
+
+All workshop registrations
+
+CSV format with proper columns
+
+✉️ 7. Email Notifications
+
+Use Nodemailer:
+
+Send email to team leader after hackathon registration
+
+Send email to workshop participant
+
+HTML email templates
+
+🪟 8. Frontend Requirements
+
+Use React:
+
+TailwindCSS UI
+
+Modern dashboard
+
+Fully responsive
+
+Protected routes (React Router + JWT)
+
+🗄 9. Backend API Requirements
+
+Node + Express APIs:
+
+/auth/login
+
+/auth/signup
+
+/auth/reset-password
+
+/hackathon/register
+
+/hackathon/list
+
+/workshop/register
+
+/workshop/list
+
+/admin/export-csv
+
+/admin/login
+
+🛢 10. MongoDB Collections
+
+Create collections:
+
+users
+
+hackathon_registrations
+
+hackathon_members
+
+workshop_registrations
+
+admin
+
+💥 Overall Goal
+
+Build a complete platform where:
+
+Users create account → login → register events
+
+Hackathon team leader can add members
+
+Admin can manage everything & download CSV
+
+Use MongoDB for database
+
+Nodemailer for emails
+
+Deliver the project with full source code and instructions to run:
+
+/frontend → React
+
+/backend → Node + Express
+
+.env example
+
+Add clean UI and good folder structure.
