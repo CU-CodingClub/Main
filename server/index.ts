@@ -175,7 +175,7 @@ app.get("/", (req: Request, res: Response) => {
     });
 
     // Static file serving
-    if (process.env.NODE_ENV === "production") {
+   if (process.env.NODE_ENV === "production" || process.env.RENDER) {
       serveStatic(app);
       log("✅ Production mode - static files serving enabled", "static");
     } else {
