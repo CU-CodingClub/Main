@@ -93,7 +93,7 @@ app.use((req, res, next) => {
 });
 
 // Test email endpoint
-app.get("/api/test-email", async (req: Request, res: Response) => {
+app.get("/api/email", async (req: Request, res: Response) => {
   try {
     const { sendEmail } = await import("./email");
     const success = await sendEmail(
